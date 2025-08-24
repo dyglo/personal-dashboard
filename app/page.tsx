@@ -26,6 +26,7 @@ import { GamificationSystem } from "@/components/gamification-system"
 import { DataVisualization } from "@/components/data-visualization"
 import { PDFReportGenerator } from "@/components/pdf-report-generator"
 import { SmartHabitSuggestions } from "@/components/smart-habit-suggestions"
+import { VoiceCommands } from "@/components/voice-commands"
 import { toast } from "sonner"
 
 export default function TafaDashboard() {
@@ -151,6 +152,13 @@ export default function TafaDashboard() {
               <span className="sm:hidden whitespace-nowrap">Sug</span>
             </TabsTrigger>
             <TabsTrigger
+              value="voice"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
+            >
+              <span className="hidden sm:inline whitespace-nowrap">Voice</span>
+              <span className="sm:hidden whitespace-nowrap">Mic</span>
+            </TabsTrigger>
+            <TabsTrigger
               value="gamification"
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
@@ -191,6 +199,7 @@ export default function TafaDashboard() {
               <option value="goals">Goals</option>
               <option value="visualization">Charts</option>
               <option value="suggestions">Suggestions</option>
+              <option value="voice">Voice</option>
               <option value="gamification">Gamification</option>
               <option value="insights">AI Insights</option>
               <option value="reports">PDF Reports</option>
@@ -318,6 +327,51 @@ export default function TafaDashboard() {
                 setHabits([...habits, habit])
                 toast.success("Habit added successfully!", {
                   description: "Your new habit has been added to your tracker.",
+                })
+              }}
+            />
+          </TabsContent>
+
+          {/* Voice Commands Tab */}
+          <TabsContent value="voice" className="space-y-4">
+            <VoiceCommands 
+              habits={habits}
+              goals={goals}
+              currentTab={activeTab}
+              onNavigate={setActiveTab}
+              onAddHabit={(newHabit) => {
+                const habit: Habit = {
+                  ...newHabit,
+                  id: Date.now().toString(),
+                  createdAt: new Date().toISOString(),
+                  completions: [],
+                  streak: 0,
+                  completed: false,
+                }
+                setHabits([...habits, habit])
+                toast.success("Habit added via voice!", {
+                  description: "Your new habit has been added to your tracker.",
+                })
+              }}
+              onMarkHabitComplete={(habitId) => {
+                setHabits(habits.map(habit => 
+                  habit.id === habitId 
+                    ? { ...habit, completed: !habit.completed }
+                    : habit
+                ))
+                toast.success("Habit status updated via voice!")
+              }}
+              onAddGoal={(newGoal) => {
+                const goal: Goal = {
+                  ...newGoal,
+                  id: Date.now().toString(),
+                  createdAt: new Date().toISOString(),
+                  completed: false,
+                  progress: 0,
+                }
+                setGoals([...goals, goal])
+                toast.success("Goal added via voice!", {
+                  description: "Your new goal has been added to your tracker.",
                 })
               }}
             />
