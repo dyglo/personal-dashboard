@@ -17,6 +17,7 @@ import {
   Plus,
   PieChart,
   FileDown,
+  Lightbulb,
 } from "lucide-react"
 import { HabitTracker, type Habit } from "@/components/habit-tracker"
 import { GoalManager, type Goal } from "@/components/goal-manager"
@@ -24,6 +25,7 @@ import { AIInsights } from "@/components/ai-insights"
 import { GamificationSystem } from "@/components/gamification-system"
 import { DataVisualization } from "@/components/data-visualization"
 import { PDFReportGenerator } from "@/components/pdf-report-generator"
+import { SmartHabitSuggestions } from "@/components/smart-habit-suggestions"
 import { toast } from "sonner"
 
 export default function TafaDashboard() {
@@ -90,21 +92,21 @@ export default function TafaDashboard() {
     goals.length > 0 ? Math.round(goals.reduce((acc, g) => acc + g.progress, 0) / goals.length) : 0
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-background p-3 sm:p-4 md:p-6">
+              <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-foreground">Tafa</h1>
-            <p className="text-secondary mt-1">Your Personal Analytics Dashboard</p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Tafa</h1>
+            <p className="text-secondary mt-1">My personal dashboard ...</p>
           </div>
-          <div className="flex items-center gap-4">
-            <Badge variant="secondary" className="bg-primary text-primary-foreground">
-              <Zap className="w-4 h-4 mr-1" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Badge variant="secondary" className="bg-primary text-primary-foreground text-xs sm:text-sm">
+              <Zap className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               Level {userLevel}
             </Badge>
-            <Badge variant="outline" className="border-accent text-accent">
-              <Star className="w-4 h-4 mr-1" />
+            <Badge variant="outline" className="border-accent text-accent text-xs sm:text-sm">
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               {userXP.toLocaleString()} XP
             </Badge>
           </div>
@@ -112,64 +114,69 @@ export default function TafaDashboard() {
 
         {/* Navigation Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex w-full bg-card overflow-x-auto scrollbar-hide">
+          <TabsList className="flex w-full bg-card overflow-x-auto scrollbar-hide min-h-[44px]">
             <TabsTrigger
               value="overview"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <BarChart3 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap">Overview</span>
               <span className="sm:hidden whitespace-nowrap">Over</span>
             </TabsTrigger>
             <TabsTrigger
               value="habits"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap">Habits</span>
               <span className="sm:hidden whitespace-nowrap">Hab</span>
             </TabsTrigger>
             <TabsTrigger
               value="goals"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <Target className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap">Goals</span>
               <span className="sm:hidden whitespace-nowrap">Goal</span>
             </TabsTrigger>
             <TabsTrigger
               value="visualization"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <PieChart className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 flex-shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap">Charts</span>
               <span className="sm:hidden whitespace-nowrap">Cht</span>
             </TabsTrigger>
             <TabsTrigger
-              value="gamification"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm hidden md:flex"
+              value="suggestions"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <span className="whitespace-nowrap">Gamification</span>
+              <span className="hidden sm:inline whitespace-nowrap">Suggestions</span>
+              <span className="sm:hidden whitespace-nowrap">Sug</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="gamification"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
+            >
+              <span className="hidden sm:inline whitespace-nowrap">Gamification</span>
+              <span className="sm:hidden whitespace-nowrap">Game</span>
             </TabsTrigger>
             <TabsTrigger
               value="insights"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm hidden md:flex"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <span className="whitespace-nowrap">AI Insights</span>
+              <span className="hidden sm:inline whitespace-nowrap">AI Insights</span>
+              <span className="sm:hidden whitespace-nowrap">AI</span>
             </TabsTrigger>
             <TabsTrigger
               value="reports"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm hidden md:flex"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <FileDown className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="whitespace-nowrap">PDF Reports</span>
+              <span className="hidden sm:inline whitespace-nowrap">PDF Reports</span>
+              <span className="sm:hidden whitespace-nowrap">PDF</span>
             </TabsTrigger>
             <TabsTrigger
               value="achievements"
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm hidden md:flex"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground flex-shrink-0 min-w-0 px-1.5 sm:px-2 md:px-3 py-2 text-xs sm:text-sm"
             >
-              <Award className="w-4 h-4 mr-2 flex-shrink-0" />
-              <span className="whitespace-nowrap">Legacy</span>
+              <span className="hidden sm:inline whitespace-nowrap">Legacy</span>
+              <span className="sm:hidden whitespace-nowrap">Leg</span>
             </TabsTrigger>
           </TabsList>
 
@@ -177,16 +184,17 @@ export default function TafaDashboard() {
             <select
               value={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
-              className="w-full p-2 bg-card border border-border rounded-md text-card-foreground text-sm"
+              className="w-full p-3 bg-card border border-border rounded-md text-card-foreground text-sm focus:ring-2 focus:ring-primary focus:border-primary"
             >
-              <option value="overview">📊 Overview</option>
-              <option value="habits">✅ Habits</option>
-              <option value="goals">🎯 Goals</option>
-              <option value="visualization">📈 Charts</option>
-              <option value="gamification">🏆 Gamification</option>
-              <option value="insights">💡 AI Insights</option>
-              <option value="reports">📄 PDF Reports</option>
-              <option value="achievements">🏅 Legacy</option>
+              <option value="overview">Overview</option>
+              <option value="habits">Habits</option>
+              <option value="goals">Goals</option>
+              <option value="visualization">Charts</option>
+              <option value="suggestions">Suggestions</option>
+              <option value="gamification">Gamification</option>
+              <option value="insights">AI Insights</option>
+              <option value="reports">PDF Reports</option>
+              <option value="achievements">Legacy</option>
             </select>
           </div>
 
@@ -291,6 +299,28 @@ export default function TafaDashboard() {
           {/* Data Visualization Tab */}
           <TabsContent value="visualization" className="space-y-4">
             <DataVisualization habits={habits} goals={goals} />
+          </TabsContent>
+
+          {/* Smart Suggestions Tab */}
+          <TabsContent value="suggestions" className="space-y-4">
+            <SmartHabitSuggestions 
+              habits={habits} 
+              goals={goals} 
+              onAddHabit={(newHabit) => {
+                const habit: Habit = {
+                  ...newHabit,
+                  id: Date.now().toString(),
+                  createdAt: new Date().toISOString(),
+                  completions: [],
+                  streak: 0,
+                  completed: false,
+                }
+                setHabits([...habits, habit])
+                toast.success("Habit added successfully!", {
+                  description: "Your new habit has been added to your tracker.",
+                })
+              }}
+            />
           </TabsContent>
 
           {/* Gamification Tab */}
