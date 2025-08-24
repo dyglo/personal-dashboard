@@ -1,0 +1,17 @@
+{
+  "name": "Tafa - Personal Analytics Dashboard",
+  "short_name": "Tafa",
+  "description": "AI-powered personal analytics with gamification",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#fbbe05",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
